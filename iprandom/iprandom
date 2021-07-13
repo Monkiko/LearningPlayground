@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+#
+#
+#
+import random
+#
+#
+IP1=random.randrange(1, 254)
+IP2=random.randrange(0, 255)
+IP3=random.randrange(0, 255)
+IP4=random.randrange(0, 255)
+CIDR=random.randrange(1, 31)
+#
+#
+print "%r.%r.%r.%r/%r" % (IP1, IP2, IP3, IP4, CIDR)

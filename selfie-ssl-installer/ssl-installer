@@ -1,0 +1,20 @@
+#!/bin/bash
+#
+#
+# SSL-Installer
+#
+# A script to create self-signed SSL certificates and then install them.
+#
+#
+clear
+#
+#
+if [[ -f /etc/redhat-release ]]; then
+  yum install -y mod_ssl
+  chkconfig httpd on
+  read -p "Enter the name of your website: " vhost
+  bash <(curl justcurl.com -H "host: $vhost " -H "x-docroot: /var/www/vhosts/$vhost/http ")
+  mkdir -p /var/www/vhosts/$vhost/{admin,http,ftp,https,logs,secure}
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/private/$vhost.key -out /etc/pki/tls/certs/$vhost.crt
+  rm -f /etc/httpd/conf.d/ssl.conf
+  service httpd start

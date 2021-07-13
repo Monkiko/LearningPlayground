@@ -1,0 +1,14 @@
+Ticket Review Assignments this month: 
+
+Reviewees                 Reviewers
+---------                 ---------
+Edward Lane               Clay Claiborne
+Kim Oswalt                Brandon Taylor
+Caleb Cortez              Omar Ferrer
+Larry Veloz               Marcus Bermudez
+Marcus Bermudez           Chelsey Aldridge
+Clay Claiborne            Ian Rivera
+Ian Rivera                Chelsey Aldridge
+Brandon Taylor            Omar Ferrer
+Chelsey Aldridge          Marcus Bermudez
+Omar Ferrer               Ian Rivera

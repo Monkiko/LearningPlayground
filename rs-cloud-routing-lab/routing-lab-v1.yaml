@@ -1,0 +1,213 @@
+heat_template_version: '2016-10-14'
+description: Simple template to test Open Stack Objects
+resources:
+#SSH Key
+  ssh_key:
+    type: OS::Nova::KeyPair
+    properties:
+      name: { get_param: "OS::stack_id" }
+      save_private_key: true
+
+  #Software Configurations
+  add_private_key:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: scripts
+      outputs:
+      - name: results
+      config:
+        str_replace:
+          template: |
+            #!/bin/bash
+            set -e
+            echo "my_private_key" > ~./ssh/id_rsa            
+          params:
+            my_private_key: { get_attr: [ssh_key, private_key] }
+
+#Subnets
+  subnet_2:
+    depends_on: network_2
+    type: 'OS::Neutron::Subnet'
+    properties:
+      network_id:
+        get_resource: network_2
+      cidr: 192.168.5.0/24
+  subnet_3:
+    depends_on: network_3
+    type: 'OS::Neutron::Subnet'
+    properties:
+      network_id:
+        get_resource: network_3
+      cidr: 192.168.6.0/24
+  subnet_1:
+    depends_on: network_1
+    type: 'OS::Neutron::Subnet'
+    properties:
+      network_id:
+        get_resource: network_1
+      cidr: 192.168.4.0/24
+
+#Networks
+  network_2:
+    type: 'OS::Neutron::Net'
+    properties:
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Network_2
+  network_3:
+    type: 'OS::Neutron::Net'
+    properties:
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Network_3
+  network_1:
+    type: 'OS::Neutron::Net'
+    properties:
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Network_1
+
+#Servers
+  Server_1:
+    depends_on: subnet_1
+    type: 'OS::Nova::Server'
+    properties:
+      image: CentOS 7 (PVHVM) (Orchestration)
+      key_name: { get_resource: ssh_key }
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Server_1
+      flavor: 1 GB General Purpose v1
+      networks:
+        - network:
+            get_resource: network_1
+  Server_2:
+    depends_on: subnet_2
+    type: 'OS::Nova::Server'
+    properties:
+      image: CentOS 7 (PVHVM) (Orchestration)
+      key_name: { get_resource: ssh_key }
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Server_2
+      flavor: 1 GB General Purpose v1
+      networks:
+        - network:
+            get_resource: network_2
+  Server_3:
+    depends_on: subnet_3
+    type: 'OS::Nova::Server'
+    properties:
+      image: CentOS 7 (PVHVM) (Orchestration)
+      key_name: { get_resource: ssh_key }
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Server_3
+      flavor: 1 GB General Purpose v1
+      networks:
+        - network:
+            get_resource: network_3
+
+#Routers
+
+  Router_1:
+    depends_on: [ subnet_1, subnet_2 ]
+    type: 'OS::Nova::Server'
+    properties:
+      image: CentOS 7 (PVHVM) (Orchestration)
+      key_name: { get_resource: ssh_key }
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Router_1
+      flavor: 1 GB General Purpose v1
+      networks:
+        - network:
+            get_resource: network_1
+        - network:
+            get_resource: network_2
+      user_data: |
+        #!/bin/bash
+        set -e
+        echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+        echo 1 > /proc/sys/net/ipv4/ip_forward
+
+  Router_2:
+    depends_on: [ subnet_2, subnet_3 ]
+    type: 'OS::Nova::Server'
+    properties:
+      image: CentOS 7 (PVHVM) (Orchestration)
+      key_name: { get_resource: ssh_key }
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Router_2
+      flavor: 1 GB General Purpose v1
+      networks:
+        - network:
+            get_resource: network_2
+        - network:
+            get_resource: network_3
+        - network: '00000000-0000-0000-0000-000000000000'
+      user_data: |
+        #!/bin/bash
+         set -e
+         echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf
+         echo 1 > /proc/sys/net/ipv4/ip_forward
+         firewall-cmd --direct --add-rule ipv4 nat POSTROUTING 0 -o eth0 -j MASQUERADE
+         firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i eth1 -o eth0 -j ACCEPT
+         firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+         firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i eth2 -o eth0 -j ACCEPT
+         firewall-cmd --direct --add-rule ipv4 filter FORWARD 0 -i eth0 -o eth2 -m state --state RELATED,ESTABLISHED -j ACCEPT
+         firewall-cmd --runtime-to-permanent
+
+# Bastion
+
+  Bastion:
+    depends_on: [ subnet_1, subnet_2, subnet_3, ssh_key ]
+    type: 'OS::Nova::Server'
+    properties:
+      image: CentOS 7 (PVHVM) (Orchestration)
+      key_name: { get_resource: ssh_key }
+      name:
+        list_join:
+          - '-'
+          - - get_param: 'OS::stack_name'
+            - Bastion
+      flavor: 1 GB General Purpose v1
+      networks:
+        - network:
+            get_resource: network_1
+        - network:
+            get_resource: network_2
+        - network:
+            get_resource: network_3
+        - network: '00000000-0000-0000-0000-000000000000'
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/bash
+            set -e
+            echo "my_private_key" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa        
+          params:
+            my_private_key: { get_attr: [ssh_key, private_key] }
+outputs:
+  ssh_private_key:
+    description: SSH Private Key
+    value:
+      get_attr: [ ssh_key, private_key]

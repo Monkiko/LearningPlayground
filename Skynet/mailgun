@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+#
+#
+import requests
+import commands
+#
+#
+#This grabs the day of the week to determine which function to use.
+day = commands.getoutput("date +%a")
+#
+#
+#
+def weekday1_message():
+    return requests.post(
+        "https://api.mailgun.net/v3/irl-tinkerlab.net/messages",
+        auth=("api", "key-83d206c1b7d736ed433938fe4f3b4d8b"),
+        files=[("attachment", open("/root/skynet.txt"))],
+        data={"from": "Ian Rivera-Leandry <mailgun@irl-tinkerlab.net>",
+              "to": ["Ian.Rivera-Leandry@rackspace.com", "Shaun.Crumpler@rackspace.com", "Jeremy.Brown@rackspace.com", "Harold.Creger@rackspace.com"],
+              "subject": "A message from Skynet...",
+              "text": "Have a great day!"})
+#
+#
+#
+def weekday2_message():
+    return requests.post(
+        "https://api.mailgun.net/v3/irl-tinkerlab.net/messages",
+        auth=("api", "key-83d206c1b7d736ed433938fe4f3b4d8b"),
+        files=[("attachment", open("/root/skynet.txt"))],
+        data={"from": "Ian Rivera-Leandry <mailgun@irl-tinkerlab.net>",
+              "to": ["Ian.Rivera-Leandry@rackspace.com", "Shaun.Crumpler@rackspace.com", "Jeremy.Brown@rackspace.com", "Harold.Creger@rackspace.com"],
+              "subject": "A message from Skynet...",
+              "text": "Have a great day!"})
+#
+#
+#
+def wednesday_message():
+    return requests.post(
+        "https://api.mailgun.net/v3/irl-tinkerlab.net/messages",
+        auth=("api", "key-83d206c1b7d736ed433938fe4f3b4d8b"),
+        files=[("attachment", open("/root/skynet.txt"))],
+        data={"from": "Ian Rivera-Leandry <mailgun@irl-tinkerlab.net>",
+              "to": ["Ian.Rivera-Leandry@rackspace.com", "Shaun.Crumpler@rackspace.com", "Jeremy.Brown@rackspace.com", "Harold.Creger@rackspace.com"],
+              "subject": "A message from Skynet...",
+              "text": "Have a great day!"})
+
+#
+#
+#
+def start():
+    if day == "Mon" or day == "Tue":
+        weekday1_message()
+    elif day == "Thu" or day == "Fri":
+        weekday2_message()
+    elif day == "Wed":
+        wednesday_message()
+    else:
+        print "Something is wrong. Please inform Ian Rivera-Leandry"
+        exit(1)
+#
+#
+#
+start()

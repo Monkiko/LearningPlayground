@@ -1,0 +1,139 @@
+#!/usr/bin/env python
+#
+#
+# Revised Skynet script to incorporate assigning positions for the latency
+# list
+#
+# Author: Ian Rivera-Leandry
+# Contributed by: Isaac Diaz
+# Creation Date: July 14, 2016
+# Last Revised On: March 10, 2017
+#
+import commands
+import subprocess
+from random import shuffle
+import requests, json, time, os
+#
+#
+#This function will retrieve the API from the URL and return the data as a dictionary
+def resCalData():
+
+    #Get the current date and put it in a format that we can use in the URL
+    #(YYYY-MM-DD)
+    newDay = time.strftime('%Y' + '-' + '%m' + '-' + '%d')
+    newDay = 'https://www.staffingcalendar.com/combined/api_dailycoverage.php?q' + newDay + '&team=330'
+
+    #make a http request to the API and store the data in res object
+    res = requests.get(str(newDay))
+
+    # now we take the data from the website and put it into dayData as a dictionary
+    dayData = json.loads(res.text)
+    return dayData
+
+# This fucntion will open a file that contains a list of people we should not include in the list returned
+# by getCalData(), compare and return a list with those people in text removed
+def revokePerson(userList):
+    curWorkDir = os.getcwd()
+    revokeList = open(os.path.expanduser('~') + '/Skynet/revokeList.txt')
+    revokeList = revokeList.read().splitlines()
+
+    return [x for x in userList if x not in revokeList]
+
+#This function will parse the dictionary retrieved from resCalData function and return a list
+#based off STI and STII coming in at noon
+def getCalData(group):
+
+    dayData = resCalData()
+
+    # Define an empty list for us to fill with data
+    #userDict = {}
+    userList = []
+
+    #We take the argument from getCalData and decided what group of STs we are going to return
+    if group == 1:
+        for throwAway, dictKey in dayData.items():
+            if str(dictKey['empTitle']) == 'ST-I':
+               userList = userList + [str(dictKey['firstName'])]
+        return revokePerson(userList)
+    if group == 2:
+        for throwAway, dictKey in dayData.items():
+            if str(dictKey['empTitle']) == 'ST-II':
+               userList = userList + [str(dictKey['firstName'])]
+        return revokePerson(userList)
+
+    #******This section obselete but useful for reference********************************************
+    # Now we step through the downloaded Json object and parse what we want, putting the data we want
+    # into our dictionary
+    #
+    #for throwAway, dictKey in dayData.items():
+    #    userDict[str(dictKey['firstName'] + ' ' + dictKey['lastName'])] = str(dictKey['empTitle'])
+    #
+    #return userDict
+    #*************************************************************************************************
+
+#This function will call getCalData and return a list with all ST-I's
+def regSTI():
+    global userList
+    userList = getCalData(1)
+#This function will call getCalData and return a list with all ST-II's
+def regSTII():
+    global userList2
+    userList2 = getCalData(2)
+###############################################################################
+#
+#
+#
+def ST_setup():
+    global L1
+    global L2
+    global userList
+    global userList2
+    L1 = userList[:]
+    L2 = userList2[:]
+
+#
+#
+#
+def queue_assignments():
+    global L1
+    global L2
+    L1_Jobs = ['Criticals', 'Criticals', 'Strategic', 'S-Chat/Playbooks']
+    L2_Jobs = ['P-Chat']
+    if len(L2) == 0:
+        L1_Jobs = ['P-Chat', 'Criticals', 'Criticals', 'Strategic', 'S-Chat/Playbooks']
+        L2_Jobs = []
+    Jobs = ['#1', '#2', '#3', 'Playbooks', 'Playbooks', '#4', '#5', '#6', '#7',
+    '#8', '#9', '#10', '#11']
+    shuffle(L1)
+    shuffle(L2)
+    print ("\n")
+    print ("\n")
+    print "2-11pm queue assignments are: "
+    print ("\n")
+    padding = 9
+    for c1, c2 in zip(L2, L2_Jobs):
+        print "%s %s" % (c1.ljust(padding), c2)
+        L2.remove(c1)
+    padding = 9
+    for c1, c2 in zip(L1, L1_Jobs):
+        print "%s %s" % (c1.ljust(padding), c2)
+        L1.remove(c1)
+    ST = L1 + L2
+    shuffle(ST)
+    padding = 9
+    for c1, c2 in zip(ST, Jobs):
+        print "%s %s" % (c1.ljust(padding), c2)
+
+#
+#
+# This function uses the date captured earlier to determine which
+# latency queue set up to call
+def start():
+    regSTI()
+    regSTII()
+    ST_setup()
+    queue_assignments()
+#
+#
+#
+start()

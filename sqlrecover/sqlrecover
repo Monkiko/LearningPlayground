@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+#
+#Script to recover mysql root password
+#
+#
+#Stop MySQL
+service mysqld stop
+sleep 1
+#
+#
+#Start MySQL in Safe mode in the background
+mysqld_safe --skip-grant-tables &
+sleep 1
+#
+#
+#Use the mysql database and Update the root password
+mysql -e 'USE mysql; UPDATE user set Password=Password("recover") WHERE USER="root"; FLUSH PRIVILEGES;'
+sleep 1
+#
+#
+#Stop MySQL
+service mysqld stop
+sleep 1
+#
+#
+#Start MySQL normally
+service mysqld start
+sleep 1
+#
+#
+#Log in to MySQL as root
+#mysql -u root -p
