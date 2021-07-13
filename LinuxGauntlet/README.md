@@ -34,15 +34,13 @@ The following will be a list of tasks/challenges that are designed to give you a
 
 10) Setup MySQL replication.
 
-11) Package upgrade using the yum replace plugin.
+11) Create a Self-Signed SSL Certificate
 
-12) Create a Self-Signed SSL Certificate
+12) Configuring HTTP -> HTTPS redirect.
 
-13) Configuring HTTP -> HTTPS redirect.
+13) Install NGINX and configuring multiple web servers on multiple ports.
 
-14) Install NGINX and configuring multiple web servers on multiple ports.
-
-15) Modify PHP values
+14) Modify PHP values
 
 Extra Credit: In MySQL, create a database called "Playground". Add a table called movies with the following columns: "id | name | genre | year ". The id column should auto-increment. Add entries with movies you own. For example:
 
