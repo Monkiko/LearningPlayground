@@ -62,5 +62,3 @@ Select * from movies;
 Extra Practice:
 
 Work on your Regex -> https://alf.nu/RegexGolf
-
-Need shorter tasks? Click [here](https://one.rackspace.com/display/~ian8775/Quick+Linux+Tasks "Quick Linux Tasks")
