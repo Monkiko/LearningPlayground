@@ -10,7 +10,9 @@ Vagrant.configure("2") do |config|
   config.vm.define "ansible" do |ansible|
     ansible.vm.box = "centos/7"
     ansible.vm.network "private_network", ip: "192.168.25.2"
-    ansible.vm.provision "shell", inline: "yum install -y vim epel-release; yum install -y ansible; useradd ansible; sed -i -E 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config; systemctl reload sshd; hostnamectl set-hostname ansible-server; echo '192.168.25.3  test' >> /etc/hosts; echo 'test' >> /home/ansible/inventory"
+    ansible.vm.provision "shell", inline: "yum install -y vim epel-release; yum install -y ansible; useradd ansible; \
+    sed -i -E 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config; systemctl reload sshd; \
+    hostnamectl set-hostname ansible-server; echo '192.168.25.3  test' >> /etc/hosts; echo 'test' >> /home/ansible/inventory"
   end
 
   config.vm.define "server1" do |server1|
