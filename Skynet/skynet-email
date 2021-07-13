@@ -1,7 +1,0 @@
-#!/bin/bash
-#
-#
-~/Skynet/skynet > ~/skynet.txt
-#
-#
-python ~/Skynet/mailgun
