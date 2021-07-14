@@ -400,16 +400,14 @@ fi
 echo
 echo
 
-#SSL Cert creation, installation, and redirect checker
+#SSL Cert creation and installation
 
-echo "11) Checking that SSL certificate was created and installed and then HTTP was redirected to HTTPS"
-echo -e "-------------------------------------------------------------------------------------------------\n"
+echo "11) Checking that SSL certificate was created and installed"
+echo -e "-----------------------------------------------------------\n"
 find / -type f -name stgauntlet.tech.key &> /dev/null
 KEY=$?
 find / -type f -name stgauntlet.tech.crt &> /dev/null
 CERT=$?
-curl -Is localhost | grep -E " 302 |Location: https:" &> /dev/null
-REDRT=$?
 
 if [ "$KEY" -eq 0 ]
 then
@@ -417,14 +415,8 @@ then
   if [ "$CERT" -eq 0 ]
   then
     echo "SSL certificate created?: Yes"
-    if [ "$REDRT" -eq 0 ]
-    then
-      echo "HTTP requests redirected to HTTPS?: Yes"
-      echo "Grade: PASS"
-      echo "PASS" >> ./stg_score.txt
-    else
-      echo "HTTP requests redirected to HTTPS?: No"
-    fi
+    echo "Grade: PASS"
+    echo "PASS" >> ./stg_score.txt
   else
     echo "SSL certificate created?: No"
   fi
@@ -432,7 +424,31 @@ else
   echo "Private key created?: No"
 fi
 
-if [ "$KEY" -ne 0 ] || [ "$CERT" -ne 0 ] || [ "$REDRT" -ne 0 ]
+if [ "$KEY" -ne 0 ] || [ "$CERT" -ne 0 ]
+then
+  echo "Grade: FAIL"
+fi
+echo
+echo
+
+
+# Apache HTTP redirect checker
+
+echo "12) Checking that HTTP traffic was redirected to HTTPS"
+echo -e "------------------------------------------------------\n"
+curl -Is localhost | grep -E " 302 |Location: https:" &> /dev/null
+REDRT=$?
+
+if [ "$REDRT" -eq 0 ]
+then
+  echo "HTTP requests redirected to HTTPS?: Yes"
+  echo "Grade: PASS"
+  echo "PASS" >> ./stg_score.txt
+else
+  echo "HTTP requests redirected to HTTPS?: No"
+fi
+
+if [ "$REDRT" -ne 0 ]
 then
   echo "Grade: FAIL"
 fi
