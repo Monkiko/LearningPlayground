@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#This script is used to grade the Support Tech Gauntlet to see if objectives
+#This script is used to grade the Linux Gauntlet to see if objectives
 #have been met.
 
 #Author: Ian Rivera-Leandry
 #Date Created: 2019-1-12
-#Last Modified: 2019-4-24
-#Version: 1.0.0
+#Last Modified: 2021-07-14
+#Version: 1.1.0
 #OS: CentOS/RHEL 6
 
 #Clearing screen for readability
@@ -399,93 +399,14 @@ fi
 echo
 echo
 
-#Checking that PHP was upgraded to version 5.6
+#SSL Cert creation and installation
 
-echo "11) Checking that PHP was upgraded to version 5.6"
-echo -e "-------------------------------------------------\n"
-PHPV=$(php --version | head -n 1 | awk '{print $2}' | awk -F. '{print $1,$2}')
-if [ "$PHPV" == "5 6" ]
-then
-  echo "PHP was upgraded to 5.6?: Yes"
-  echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
-else
-  echo "PHP was upgraded to 5.6?: No"
-  echo "Grade: FAIL"
-fi
-echo
-echo
-
-#Checking that monitoring agent and driveclient was installed and backup_test was restored to /home/stgauntlet
-
-echo "12) Checking that monitoring agent and driveclient are installed and backup_test was restored correctly"
-echo -e "-------------------------------------------------------------------------------------------------------\n"
-rpm -qa | grep rackspace-monitoring-agent &> /dev/null
-RMAI=$?
-rpm -qa | grep driveclient &> /dev/null
-DRVI=$?
-service rackspace-monitoring-agent status | grep -i running &> /dev/null
-RMAR=$?
-service driveclient status | grep -i running &> /dev/null
-DRVR=$?
-grep "Successfully restored with data integrity {filename=/home/stgauntlet/root/backup_test}" /var/log/driveclient.log &> /dev/null
-RST=$?
-
-if [ "$RMAI" -eq 0 ]
-then
-  echo "Rackspace monitoring agent installed?: Yes"
-else
-  echo "Rackspace monitoring agent installed?: No"
-fi
-
-if [ "$DRVI" -eq 0 ]
-then
-  echo "Driveclient installed?: Yes"
-else
-  echo "Driveclient installed?: No"
-fi
-
-if [ "$RMAR" -eq 0 ]
-then
-  echo "Rackspace monitoring agent running?: Yes"
-else
-  echo "Rackspace monitoring agent running?: No"
-fi
-
-if [ "$DRVR" -eq 0 ]
-then
-  echo "Driveclient running?: Yes"
-else
-  echo "Driveclient running?: No"
-fi
-
-if [ "$RST" -eq 0 ]
-then
-  echo "Was backup_test restored correctly?: Yes"
-else
-  echo "Was backup_test restored correctly?: No"
-fi
-
-if [ "$DRVR" -eq 0 ] && [ "$RMAR" -eq 0 ] && [ "$RST" -eq 0 ]
-then
-  echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
-else
-  echo "Grade: FAIL"
-fi
-echo
-echo
-
-#SSL Cert creation, installation, and redirect checker
-
-echo "13) Checking that SSL certificate was created and installed and then HTTP was redirected to HTTPS"
-echo -e "-------------------------------------------------------------------------------------------------\n"
+echo "11) Checking that SSL certificate was created and installed"
+echo -e "-----------------------------------------------------------\n"
 find / -type f -name stgauntlet.tech.key &> /dev/null
 KEY=$?
 find / -type f -name stgauntlet.tech.crt &> /dev/null
 CERT=$?
-curl -Is localhost | grep -E " 302 |Location: https:" &> /dev/null
-REDRT=$?
 
 if [ "$KEY" -eq 0 ]
 then
@@ -493,14 +414,8 @@ then
   if [ "$CERT" -eq 0 ]
   then
     echo "SSL certificate created?: Yes"
-    if [ "$REDRT" -eq 0 ]
-    then
-      echo "HTTP requests redirected to HTTPS?: Yes"
-      echo "Grade: PASS"
-      echo "PASS" >> ./stg_score.txt
-    else
-      echo "HTTP requests redirected to HTTPS?: No"
-    fi
+    echo "Grade: PASS"
+    echo "PASS" >> ./stg_score.txt
   else
     echo "SSL certificate created?: No"
   fi
@@ -508,7 +423,31 @@ else
   echo "Private key created?: No"
 fi
 
-if [ "$KEY" -ne 0 ] || [ "$CERT" -ne 0 ] || [ "$REDRT" -ne 0 ]
+if [ "$KEY" -ne 0 ] || [ "$CERT" -ne 0 ]
+then
+  echo "Grade: FAIL"
+fi
+echo
+echo
+
+
+# Apache HTTP redirect checker
+
+echo "12) Checking that HTTP traffic was redirected to HTTPS"
+echo -e "------------------------------------------------------\n"
+curl -Is localhost | grep -E " 302 |Location: https:" &> /dev/null
+REDRT=$?
+
+if [ "$REDRT" -eq 0 ]
+then
+  echo "HTTP requests redirected to HTTPS?: Yes"
+  echo "Grade: PASS"
+  echo "PASS" >> ./stg_score.txt
+else
+  echo "HTTP requests redirected to HTTPS?: No"
+fi
+
+if [ "$REDRT" -ne 0 ]
 then
   echo "Grade: FAIL"
 fi
@@ -517,7 +456,7 @@ echo
 
 #Nginx installation, listening on port 8080, root is /var/www/vhosts/staging.stgauntlet.tech, index.html, and open firewall
 
-echo "14) Checking that Nginx is installed, listening on port 8080, document root is configured, index.html is configured, firewall port is open"
+echo "13) Checking that Nginx is installed, listening on port 8080, document root is configured, index.html is configured, firewall port is open"
 echo -e "------------------------------------------------------------------------------------------------------------------------------------------\n"
 rpm -qa | grep nginx &> /dev/null
 NGXI=$?
@@ -595,7 +534,7 @@ echo
 
 # Checking if upload max filesize has been updated in /etc/php.ini
 
-echo "15) Checking that upload max filesize has been updated"
+echo "14) Checking that upload max filesize has been updated"
 echo -e "------------------------------------------------------\n"
 PHPINI=$(grep "upload_max_filesize" /etc/php.ini | grep -v "^#upload_max_filesize" | awk '{print $3}')
 

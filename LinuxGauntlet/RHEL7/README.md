@@ -1,4 +1,4 @@
-# Support Tech Gauntlet - Linux
+# Linux Gauntlet
 
 The following will be a list of tasks/challenges that are designed to give you an idea of some of the technologies/programs that are supported by Linux SysAds working with CentOS 7.
 

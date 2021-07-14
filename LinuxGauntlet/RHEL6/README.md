@@ -1,9 +1,9 @@
-# Support Tech Gauntlet - Linux
+# Linux Gauntlet
 
-The following will be a list of tasks/challenges that are designed to give you an idea of some of the technologies/programs that are supported by the Linux SysAds. The idea here is to practice working with Linux Cloud Servers as well as become more familiar with our Cloud control panel.
+The following will be a list of tasks/challenges that are designed to give you an idea of some of the technologies/programs that are supported by Linux SysAds working with CentOS 6 (EOL).
 
 ##### Advice:
-* Work on your google-fu. We come across all kinds of programs and applications that we aren't always familiar with and have look up information frequently. Use this as an opportunity to strengthen this skill without a customer on the phone demanding results right now.
+* Work on your google-fu. We come across all kinds of programs and applications that we aren't always familiar with and have to look up information frequently. Use this as an opportunity to strengthen this skill without a production emergency.
 
 * If you break something, GOOD! Learn from it and if possible troubleshoot it, work through it, and you will be stronger for it.
 
@@ -12,7 +12,7 @@ The following will be a list of tasks/challenges that are designed to give you a
 
 ##### Tasks:
 
-1) Spin up a CentOS 6 cloud server. Leave the default name while building the server. After it has been built, rename the server in the control panel to <sso>-STGauntlet and adjust the hostname within the OS to "stgauntlet". Make sure the change is permanent.
+1)  Log in to server1 and change the hostname within the OS to "stgauntlet". Make sure the change is permanent.
 
 2) Create the stgauntlet user account, add them to the wheel group, make sure the wheel group is enabled in /etc/sudoers.
 
@@ -30,17 +30,15 @@ The following will be a list of tasks/challenges that are designed to give you a
 
 9) Update MySQL to 5.6.
 
-10) Take an image and build a new server. Setup MySQL replication between the two servers making the original server the slave (Don't forget to delete your image when you are done with this exercise).
+10) Setup MySQL replication between the two servers making server1 the replicant (setup /root/.my.cnf to allow noninteractive login to MySQL root user).
 
-11) Update PHP from the default version to PHP 5.6 (Use yum replace).
+11) Create a Self-Signed SSL Certificate (name the files stgauntlet.tech.crt and stgauntlet.tech.key) and install it.
 
-12) Install the monitoring agent and driveclient. Once this is configured, create a file called backup_test in /root and then take a backup of the /root directory. Once completed, delete backup_test and then restore this file from the back up to /home/stgauntlet/
+12) Configure stgauntlet.tech to redirect all HTTP traffic to HTTPS.
 
-13) Create a Self-Signed SSL Certificate (name the files stgauntlet.tech.crt and stgauntlet.tech.key), install it, and configure stgauntlet.tech to redirect all HTTP traffic to HTTPS.
+13) Install Nginx, configure it to listen on port 8080, configure a new subdomain (staging.stgauntlet.tech), make your document root /var/www/vhosts/staging.stgauntlet.tech/, and create an index.html file with "I made Nginx work!" in it. Open port 8080 on your firewall.
 
-14) Install Nginx, configure it to listen on port 8080, configure a new subdomain (staging.stgauntlet.tech), make your document root /var/www/vhosts/staging.stgauntlet.tech/, and create an index.html file with "I made Nginx work!" in it. Open port 8080 on your firewall.
-
-15) Edit php.ini to increase the upload max filesize to 40M
+14) Edit php.ini to increase the upload max filesize to 40M
 
 Extra Credit: In MySQL, create a database called "Playground". Add a table called movies with the following columns: "id | name | genre | year ". The id column should auto-increment. Add entries with movies you own. For example:
 
