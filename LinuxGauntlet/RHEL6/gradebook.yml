@@ -1,0 +1,8 @@
+---
+
+- hosts: server1
+  #sudo: yes
+  tasks:
+  - name: transfer LG_Grade.sh to server1
+    script: ./LG_Grade.sh
+    become: yes
