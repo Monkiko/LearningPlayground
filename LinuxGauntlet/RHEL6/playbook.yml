@@ -1,0 +1,5 @@
+---
+
+- name: Run LG_Grade script
+  ansible.builtin.script:
+    cmd: LG_Grade.sh
