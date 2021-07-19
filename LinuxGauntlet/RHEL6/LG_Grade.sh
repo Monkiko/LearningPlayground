@@ -5,8 +5,8 @@
 
 #Author: Ian Rivera-Leandry
 #Date Created: 2019-1-12
-#Last Modified: 2021-07-14
-#Version: 1.1.0
+#Last Modified: 2021-07-19
+#Version: 1.2.0
 #OS: CentOS/RHEL 6
 
 #Clearing screen for readability
@@ -21,7 +21,7 @@ echo "Server hostname: $HOSTNAME"
 if [ "$HOSTNAME" == "stgauntlet" ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -62,7 +62,7 @@ fi
 if [ "$WHEEL" -a "$USERM" -eq 0 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -89,7 +89,7 @@ echo "SSH is listening on port $SSHPORT"
 if [ "$RTLOGIN" -eq 0 ] && [ "$SSHPORT" -eq 2432 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "GRADE: FAIL"
 fi
@@ -160,7 +160,7 @@ fi
 if [ "$FWACT" -eq 3 ] && [ "$FWPERM" -eq 3 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -203,7 +203,7 @@ fi
 if [ "$F2BI" -eq 0 ] && [ "$F2BR" -eq 0 ] && [ "$F2BE" -eq 0 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -281,7 +281,7 @@ fi
 if [ "$APCHI" -eq 0 ] && [ "$SQLI" -eq 0 ] && [ "$PHPI" -eq 0 ] && [ "$APCHR" -eq 0 ] && [ "$SQLR" -eq 0 ] && [ "$APCHE" -eq 0 ] && [ "$SQLE" -eq 0 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -318,7 +318,7 @@ fi
 if [ -e /etc/httpd/vhost.d/stgauntlet.tech.conf ] && [ -e /var/www/vhosts/stgauntlet.tech/index.html ] && [ "$INDEX" == "I made Apache work!" ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -355,7 +355,7 @@ fi
 if [ -d /var/www/vhosts/stgauntlet.tech/wordpress ] && [ -e /var/www/vhosts/stgauntlet.tech/wordpress/wp-config.php ] && [ "$WP" -eq 0 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -372,7 +372,7 @@ if [ "$MYV" -eq 1 ]
 then
   echo "MySQL is running on version 5.6?: Yes"
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "MYSQL is running on version 5.6?: No"
   echo "Grade: FAIL"
@@ -391,7 +391,7 @@ if [ "$SIR" == "Yes" ] && [ "$SSR" == "Yes" ]
 then
   echo "MySQL Replication configured?: Yes"
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "MySQL Replication configured?: No"
   echo "Grade: FAIL"
@@ -415,7 +415,7 @@ then
   then
     echo "SSL certificate created?: Yes"
     echo "Grade: PASS"
-    echo "PASS" >> ./stg_score.txt
+    echo "PASS" >> /root/lg_score.txt
   else
     echo "SSL certificate created?: No"
   fi
@@ -442,7 +442,7 @@ if [ "$REDRT" -eq 0 ]
 then
   echo "HTTP requests redirected to HTTPS?: Yes"
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "HTTP requests redirected to HTTPS?: No"
 fi
@@ -525,7 +525,7 @@ if [ "$NGXI" -eq 0 ] && [ "$NGXR" -eq 0 ] && [ "$NGXE" -eq 0 ] && [ "$NGXACT" -e
   [ "$NGXPERM" -eq 0 ]
 then
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Grade: FAIL"
 fi
@@ -542,7 +542,7 @@ if [ "$PHPINI" == "40M" ]
 then
   echo "Was upload_max_filesize updated correctly?: Yes"
   echo "Grade: PASS"
-  echo "PASS" >> ./stg_score.txt
+  echo "PASS" >> /root/lg_score.txt
 else
   echo "Was upload_max_filesize updated correctly?: No"
   echo "Grade: FAIL"
@@ -552,8 +552,8 @@ echo
 
 #Provide Score
 
-Correct=$(grep PASS ./stg_score.txt | wc -l)
+Correct=$(grep PASS /root/lg_score.txt | wc -l)
 Score=$(( Correct * 100 ))
 Total=$(( Score / 15 ))
 echo "Score: $Total/100"
-echo '' > ./stg_score.txt
+echo '' > /root/lg_score.txt
