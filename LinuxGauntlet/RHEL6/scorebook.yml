@@ -1,0 +1,11 @@
+---
+
+- hosts: server1
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+  - name: Create the lg_score.txt file and provision vagrant with ansible
+    file:
+      path: "/root/lg_score.txt"
+      state: touch

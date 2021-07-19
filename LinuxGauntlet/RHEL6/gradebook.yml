@@ -1,8 +1,12 @@
 ---
 
-- hosts: server1
-  #sudo: yes
+- name: Transfer and Execute LG_Grade_Vagrant.sh on server1
+  hosts: server1
+  become: yes
+  become_method: sudo
   tasks:
-  - name: transfer LG_Grade.sh to server1
-    script: ./LG_Grade.sh
-    become: yes
+  - name: transfer LG_Grade_Vagrant.sh to server1
+    copy: src=LG_Grade_Vagrant.sh dest=/root mode=0744
+  
+  - name: Execute LG_Grade_Vagrant.sh
+    command: sh /root/LG_Grade_Vagrant.sh

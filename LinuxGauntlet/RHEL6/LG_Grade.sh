@@ -9,6 +9,7 @@
 #Version: 1.2.0
 #OS: CentOS/RHEL 6
 
+
 #Clearing screen for readability
 
 clear
@@ -18,7 +19,7 @@ clear
 echo "1) Checking hostname of server"
 echo -e "------------------------------\n"
 echo "Server hostname: $HOSTNAME"
-if [ "$HOSTNAME" == "stgauntlet" ]
+if [ "$HOSTNAME" == "lingauntlet" ]
 then
   echo "Grade: PASS"
   echo "PASS" >> /root/lg_score.txt

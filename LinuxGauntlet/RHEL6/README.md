@@ -12,7 +12,7 @@ The following will be a list of tasks/challenges that are designed to give you a
 
 ##### Tasks:
 
-1)  Log in to server1 and change the hostname within the OS to "stgauntlet". Make sure the change is permanent.
+1)  Log in to server1 and change the hostname within the OS to "lingauntlet". Make sure the change is permanent.
 
 2) Create the stgauntlet user account, add them to the wheel group, make sure the wheel group is enabled in /etc/sudoers.
 
@@ -60,3 +60,12 @@ Select * from movies;
 Extra Practice:
 
 Work on your Regex -> https://alf.nu/RegexGolf
+
+
+#### Vagrant Usage:
+
+* When using this gauntlet in a vagrant environment, you can use the following command to grade your environment (assuming you use the provided Vagrantfile and are in the RHEL6 directory):
+
+```
+ansible-playbook --private-key=.vagrant/machines/server1/virtualbox/private_key -u vagrant -i .vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory  gradebook.yml
+```
