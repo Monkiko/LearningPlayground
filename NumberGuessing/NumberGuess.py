@@ -7,14 +7,14 @@
 #
 from random import randrange
 from typing import TYPE_CHECKING
+from os import system
 
 num = randrange(101)
 
-print("Let's play a guessing game!")
+system('clear')
 
-def Guess():
-    global guess
-    guess = int(input("Guess a number between 1-100: "))
+print("Let's play a guessing game!")
+guess = int(input("Guess a number between 1-100: "))
 
 def NumGuess():
     global guess
@@ -22,12 +22,15 @@ def NumGuess():
         print("You guessed correctly. Good job!")
     elif guess > num:
         print("OOPS! That was too high. Try again.")
-        Guess()
+        guess = int(input("Guess a number between 1-100: "))
+        NumGuess()
     elif guess < num:
         print("OOPS! That was too low. Try again.")
-        Guess()
+        guess = int(input("Guess a number between 1-100: "))
+        NumGuess()
     else:
         print("Incorrect value entered. Try a number between 1 and 100.")
+        guess = int(input("Guess a number between 1-100: "))
+        NumGuess()
 
-Guess()
 NumGuess()
