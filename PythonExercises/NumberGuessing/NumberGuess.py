@@ -2,35 +2,50 @@
 #
 # Created by: Ian Rivera-Leandry
 # Created on: 08-06-2021
-# Last Revised on: 
+# Last Revised on:  08-06-2021
 #
 #
 from random import randrange
-from os import system
+from os import system, name
 
-num = randrange(101)
+def Clear():
+    if name == 'nt':
+        _ = system('cls')
+    else:
+        _ = system('clear')
 
-system('clear')
 
-print("Let's play a guessing game!")
-guess = input("Guess a number between 1-100: ")
+def Start():
+    global response
+    response = input("Guess a number between 1-100: ")
+    InputCheck()
+
+
+def InputCheck():
+    global response
+    global guess
+    try:
+        guess = int(response)
+        NumGuess()
+    except ValueError:
+        print("Incorrect value entered.")
+        Start()
+
 
 def NumGuess():
     global guess
-    if guess not in range(101):
-        print("Incorrect value entered. Try a number between 1 and 100.")
-        guess = input("Guess a number between 1-100: ")
-        NumGuess()
-    elif guess == num:
+    if guess == num:
         print("You guessed correctly. Good job!")
     elif guess > num:
         print("OOPS! That was too high. Try again.")
-        guess = int(input("Guess a number between 1-100: "))
-        NumGuess()
+        Start()
     elif guess < num:
         print("OOPS! That was too low. Try again.")
-        guess = int(input("Guess a number between 1-100: "))
-        NumGuess()
+        Start()
 
+num = randrange(101)
 
-NumGuess()
+print("Let's play a guessing game!")
+
+Clear()
+Start()
