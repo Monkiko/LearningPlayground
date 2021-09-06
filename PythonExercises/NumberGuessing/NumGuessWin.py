@@ -35,14 +35,13 @@ def Announcement():
 def Start():
     global response
     layout = [[sg.Text('Guess a number between 1-100:'), sg.Text(size=(15,1), key='-OUTPUT-')],
-            [sg.Input(key='-IN-')],
+            [sg.InputText(key='-IN-')],
             [sg.Button('Submit'), sg.Button('Exit')]]
 
     window = sg.Window("Guess That Number!", layout)
 
-    response = ['-IN-']
-
     event, values = window.read()
+    response = print(values['-IN-'])
     if event == 'Submit':
         window.close()
         InputCheck()
@@ -63,14 +62,13 @@ def InputCheck():
 def InvInput():
     global response
     layout = [[sg.Text('Invalid value. Please enter a number between 1-100'), sg.Text(size=(15,1))],
-            [sg.Input(key='-IN-')],
+            [sg.InputText(key='-IN-')],
             [sg.Button('Submit'), sg.Button('Exit')]]
 
     window = sg.Window("Guess That Number!", layout)
 
-    response = ['-IN-']
-
     event, values = window.read()
+    response = print(event, values['-IN-'])
     if event == 'Submit':
         window.close()
         InputCheck()
@@ -100,7 +98,7 @@ def GuessCorrect():
     event, values = window.read()
     if event == 'OK':
         window.close()
-        Start()
+        End()
     if event == sg.WIN_CLOSED or event == 'Exit':
         window.close()
 
