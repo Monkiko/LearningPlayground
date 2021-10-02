@@ -6,11 +6,20 @@
 #
 import PySimpleGUI as sg
 from random import randrange
+from os import system, name
 #
 #
 sg.theme('DarkAmber')
 #
 #
+def Clear():
+    if name == 'nt':
+        _ = system('cls')
+    else:
+        _ = system('clear')
+#
+#
+
 def Randomize():
     global num
     num = randrange(101)
@@ -34,14 +43,14 @@ def Announcement():
 #
 def Start():
     global response
-    layout = [[sg.Text('Guess a number between 1-100:'), sg.Text(size=(15,1), key='-OUTPUT-')],
+    layout = [[sg.Text('Guess a number between 1-100:'), sg.Text(size=(15,1))],
             [sg.InputText(key='-IN-')],
             [sg.Button('Submit'), sg.Button('Exit')]]
 
     window = sg.Window("Guess That Number!", layout)
 
     event, values = window.read()
-    response = print(values['-IN-'])
+    response = values['-IN-']
     if event == 'Submit':
         window.close()
         InputCheck()
@@ -68,7 +77,7 @@ def InvInput():
     window = sg.Window("Guess That Number!", layout)
 
     event, values = window.read()
-    response = print(event, values['-IN-'])
+    response = values['-IN-']
     if event == 'Submit':
         window.close()
         InputCheck()
@@ -91,6 +100,22 @@ def NumGuess():
 def GuessCorrect():
     global guess
     layout = [[sg.Text('You guessed correctly. Good job!'), sg.Text(size=(15,1))],
+                [sg.Button('Play Again'), sg.Button('Exit')]]
+    
+    window = sg.Window('Guess That Number!', layout)
+
+    event, values = window.read()
+    if event == 'Play Again':
+        window.close()
+        Randomize()
+        Start()
+    if event == sg.WIN_CLOSED or event == 'Exit':
+        window.close()
+
+
+def GuessHigh():
+    global guess
+    layout = [[sg.Text('OOPS! That was too high. Try again.'), sg.Text(size=(15,1))],
                 [sg.Button('OK'), sg.Button('Exit')]]
     
     window = sg.Window('Guess That Number!', layout)
@@ -98,43 +123,22 @@ def GuessCorrect():
     event, values = window.read()
     if event == 'OK':
         window.close()
-        End()
-    if event == sg.WIN_CLOSED or event == 'Exit':
-        window.close()
-
-
-def GuessHigh():
-    global guess
-    layout = [[sg.Text('Guess a number between 1-100:'), sg.Text(size=(15,1), key='-OUTPUT-')],
-            [sg.Input(key='-IN-')],
-            [sg.Button('Submit'), sg.Button('Exit')]]
-
-    window = sg.Window("Guess That Number!", layout)
-
-    response = ['-IN-']
-
-    event, values = window.read()
-    if event == 'Submit':
-        window.close()
-        InputCheck()
+        Start()
     if event == sg.WIN_CLOSED or event == 'Exit':
         window.close()
 
 
 def GuessLow():
     global guess
-    layout = [[sg.Text('Guess a number between 1-100:'), sg.Text(size=(15,1), key='-OUTPUT-')],
-            [sg.Input(key='-IN-')],
-            [sg.Button('Submit'), sg.Button('Exit')]]
-
-    window = sg.Window("Guess That Number!", layout)
-
-    response = ['-IN-']
+    layout = [[sg.Text('OOPS! That was too low. Try again.'), sg.Text(size=(15,1))],
+                [sg.Button('OK'), sg.Button('Exit')]]
+    
+    window = sg.Window('Guess That Number!', layout)
 
     event, values = window.read()
-    if event == 'Submit':
+    if event == 'OK':
         window.close()
-        InputCheck()
+        Start()
     if event == sg.WIN_CLOSED or event == 'Exit':
         window.close()
 #
@@ -153,5 +157,6 @@ def End():
     if event == sg.WIN_CLOSED or event == 'Exit':
         window.close()
 
+Clear()
 Randomize()
 Announcement()

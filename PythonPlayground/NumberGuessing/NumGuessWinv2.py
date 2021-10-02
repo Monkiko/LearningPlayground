@@ -35,6 +35,7 @@ def Announcement():
 #
 def Start():
     global response
+    global num
     layout = [[sg.Text('Guess a number between 1-100:'), sg.Text(size=(15,1), key='-OUTPUT-')],
             [sg.Input(key='-IN-')],
             [sg.Button('Submit'), sg.Button('Exit')]]
@@ -47,12 +48,13 @@ def Start():
         if event == sg.WIN_CLOSED or event == 'Exit':
             break
         if event == 'Submit' and values['-IN-']:
+            response = values['-IN-']
             try:
-                in_as_int = int(values['-IN-'])
+                value = int(response)
+                window['-OUTPUT-'].update(values['-IN-'])
             except:
-                if len(values['-IN-']) == 1 and values['-IN-'][0] == '-':
-                    continue
-            window['-OUTPUT-'].update(values['-IN-'])
+                window['-OUTPUT-'].update('Invalid Response. Try guessing a number between 1-100')
+            #window['-OUTPUT-'].update(values['-IN-'])
     window.close()
 
 Randomize()

@@ -52,11 +52,11 @@ def NumGuess():
 
 def End():
     answer = input("Would you like to play again? (yes/no) ")
-    if answer == "yes":
+    if answer == "yes" or answer == "y":
         Clear()
         Randomize()
         Start()
-    elif answer == "no":
+    elif answer == "no" or answer == "n":
         print("Thank you for playing!")
     else:
         print("Invalid response. Answer with yes or no.")
