@@ -1,6 +1,6 @@
 # Number Guessing Game
 #
-# Created by: Ian Rivera-Leandry
+# Created by: MonkikoBytes
 # Created on: 08-06-2021
 # Last Revised on:  10-02-2021
 #

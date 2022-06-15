@@ -3,7 +3,7 @@
 #This script is used to grade the Support Tech Gauntlet to see if objectives
 #have been met.
 
-#Author: Ian Rivera-Leandry
+#Author: MonikoBytes
 #Date Created: 2019-3-27
 #Last Modified: 2021-7-13
 #Version: 1.1.0
