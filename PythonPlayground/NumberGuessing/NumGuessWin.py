@@ -1,6 +1,6 @@
 # Window to be used with Number Guessing Game
 #
-# Created by: Ian Rivera-Leandry
+# Created by: MonkikoBytes
 # Created on: 09-04-2021
 # Last Revised on: 10-02-2021
 #

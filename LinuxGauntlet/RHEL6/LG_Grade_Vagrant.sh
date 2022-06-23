@@ -3,7 +3,7 @@
 #This script is used to grade the Linux Gauntlet to see if objectives
 #have been met.
 
-#Author: Ian Rivera-Leandry
+#Author: MonkikoBytes
 #Date Created: 2019-1-12
 #Last Modified: 2021-07-19
 #Version: 1.2.0
