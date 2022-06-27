@@ -21,20 +21,15 @@ from random import shuffle
 
 
 suit = ["Hearts", "Spades", "Clubs", "Diamonds"]
-cardDict = {1:"Ace", 2:"2", 3:"3", 4:"4", 5:"5", 6:"6", 7:"7", 8:"8", 9:"9", 10:"10", 11:"Jack", 12:"Queen", 13:"King"}
-cardDict.values()
-cardDict.keys()
-name = list(cardDict.values())
-value = list(cardDict.keys())
-print(name)
-print(value)
+names = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"}
+values = list(range(1,14))
 deck = []
 
 for s in suit:
-    for n in name:
+    for n in names:
         deck.append(print("{} of {}".format(n, s)))
 
-print(deck)
+print(values)
 #hand = 0
 
 #while hand < 5:
