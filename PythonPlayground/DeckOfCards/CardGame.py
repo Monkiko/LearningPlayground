@@ -21,15 +21,17 @@ from random import shuffle
 
 
 suit = ["Hearts", "Spades", "Clubs", "Diamonds"]
-names = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"}
+names = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
 values = list(range(1,14))
 deck = []
 
 for s in suit:
     for n in names:
-        deck.append(print("{} of {}".format(n, s)))
+        deck.append("{} of {}".format(n, s))
 
-print(values)
+print(deck)
+
+
 #hand = 0
 
 #while hand < 5:
