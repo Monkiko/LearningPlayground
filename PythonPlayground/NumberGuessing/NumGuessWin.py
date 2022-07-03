@@ -2,7 +2,7 @@
 #
 # Created by: MonkikoBytes
 # Created on: 09-04-2021
-# Last Revised on: 10-02-2021
+# Last Revised on: 07-02-2022
 #
 import PySimpleGUI as sg
 from random import randrange
@@ -91,6 +91,8 @@ def NumGuess():
     global num
     if guess == num:
         GuessCorrect()
+    elif guess > 100:
+        InvInput()
     elif guess > num:
         GuessHigh()
     elif guess < num:
