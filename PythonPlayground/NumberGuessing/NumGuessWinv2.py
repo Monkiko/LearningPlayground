@@ -54,7 +54,6 @@ def Start():
                 window['-OUTPUT-'].update(values['-IN-'])
             except:
                 window['-OUTPUT-'].update('Invalid Response. Try guessing a number between 1-100')
-            #window['-OUTPUT-'].update(values['-IN-'])
     window.close()
 
 Randomize()
