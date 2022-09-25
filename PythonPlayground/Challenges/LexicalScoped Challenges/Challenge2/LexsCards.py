@@ -51,9 +51,13 @@ class Deck:
 
 
 # Used for Testing if needed
-def main():
+#def main():
     # test code here
-    return
+#    return
 
-if __name__=="__main__":
-    main()
+#if __name__=="__main__":
+#    main()
+
+deck = Deck()
+
+print(deck)

@@ -17,3 +17,13 @@
 #Must keep track of cards remaining and shuffle when we reach the end of the deck or shortly before (up to 5 cards before end of deck is acceptable)
 #Must validate input is correct, if incorrect must re-request input.
 #Must prompt after each round if you would like to continue playing or exit.
+
+import LexsCards
+
+deck = LexsCards.Deck()
+
+deck.shuffle()
+
+hand = deck.draw()
+
+print(hand)
