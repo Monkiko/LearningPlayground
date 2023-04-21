@@ -1,0 +1,1 @@
+## All examples and exercises based on the chapters found within the "Python Crash Course" will be stored in the relevant chapter folders.
