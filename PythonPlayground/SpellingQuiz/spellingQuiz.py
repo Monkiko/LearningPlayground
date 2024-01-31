@@ -13,7 +13,7 @@ def start():
     else:
         clean()
         print("Incorrect Input. Please enter either 'Y' or 'N'")
-        sleep(5)
+        sleep(3)
         start()
 
 
