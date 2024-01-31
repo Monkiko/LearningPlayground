@@ -1,3 +1,11 @@
+"""
+The purpose of this program is to create a spelling list and then display it either immediately or during subsequent runs of the program.
+
+Created by: Ian Rivera-Leandry
+Last Updated: January 31, 2024
+Version 2.0.1
+"""
+
 import os
 from time import sleep
 
@@ -46,6 +54,24 @@ def createSpellingList(listLength):
             file.write(f"{i}\n")
     file.close()
 
+    askReadList()
+
+def askReadList():
+    seeList = str(input("Do you want to view the created list? Y/N "))
+
+    if seeList.lower() == "y" or seeList.lower() == "yes":
+        readSpellingList()
+    
+    elif seeList.lower() == "n" or seeList.lower() == "no":
+        print("Ending program now...")
+        sleep(3)
+        exit()
+
+    else:
+        clean()
+        print("Incorrect Input. Please enter either 'Y' or 'N'")
+        sleep(3)
+        askReadList()
 
 def readSpellingList():
     
@@ -54,6 +80,8 @@ def readSpellingList():
         spellingList = spelling_file.readlines()
 
     spelling_file.close()
+
+    clean()
 
     for i in spellingList:
         print(i, end="")
