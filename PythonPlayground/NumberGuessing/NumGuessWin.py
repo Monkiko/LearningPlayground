@@ -2,7 +2,7 @@
 #
 # Created by: MonkikoBytes
 # Created on: 09-04-2021
-# Last Revised on: 07-02-2022
+# Last Revised on: 03-10-2024
 #
 import PySimpleGUI as sg
 from random import randrange
@@ -145,19 +145,6 @@ def GuessLow():
         window.close()
 #
 #
-def End():
-    layout = [[sg.Text('Would you like to play again?'), sg.Text(size=(15,1))],
-                [sg.Button('OK'), sg.Button('Exit')]]
-    
-    window = sg.Window('Guess That Number!', layout)
-
-    event, values = window.read()
-    if event == 'OK':
-        window.close()
-        Randomize()
-        Start()
-    if event == sg.WIN_CLOSED or event == 'Exit':
-        window.close()
 
 Clear()
 Randomize()
