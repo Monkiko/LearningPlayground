@@ -2,8 +2,8 @@
 #
 # Created by: MonkikoBytes
 # Created on: 09-06-2021
-# Last Revised on: 03-10-2024
-# Version: 2.1.0
+# Last Revised on: 03-11-2024
+# Version: 2.2.1
 #
 import PySimpleGUI as sg
 from random import randrange
@@ -48,19 +48,22 @@ def Start():
         if event == sg.WIN_CLOSED or event == 'Exit':
             break
         if event == 'Submit' and values['-IN-']:
-            response = int(response)
+
             try:
+                response = int(response)
                 if response == num:
                     window.close()
                     GuessCorrect()
+                elif response > 100:
+                    window['-WORDS-'].update('Invalid Response. Try guessing a number between 1-100')
                 elif response < num:
                     window['-WORDS-'].update('OOPS! That was too low. Try again.')
                     window['-OUTPUT-'].update(values['-IN-'])
                 elif response > num:
                     window['-WORDS-'].update('OOPS! That was too high. Try again.')
                     window['-OUTPUT-'].update(values['-IN-'])
-            except:
-                window['-OUTPUT-'].update('Invalid Response. Try guessing a number between 1-100')
+            except ValueError:
+                window['-WORDS-'].update('Invalid Response. Try guessing a number between 1-100')
     window.close()
 
 #
