@@ -1,2 +1,3 @@
 # LearningPlayground
-Storage for scripts created as part of learning process
+
+Storage for scripts and programs created as part of the learning process
