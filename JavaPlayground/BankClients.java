@@ -23,6 +23,7 @@ class BankClients{
         }
 
         while(number != 0);
+        scanner.close();
 
     }
 }
