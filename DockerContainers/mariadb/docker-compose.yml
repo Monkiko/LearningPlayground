@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mariadb:lts
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: 7H!SmUhD8
+    volumes:
+      - datadir:/var/lib/mysql
+      - backup:/backup
+
+
+volumes:
+  datadir:
+  backup:
