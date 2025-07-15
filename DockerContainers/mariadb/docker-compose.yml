@@ -5,12 +5,13 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MARIADB_ROOT_PASSWORD: 7H!SmUhD8
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
     volumes:
-      - datadir:/var/lib/mysql
-      - backup:/backup
-
-
-volumes:
-  datadir:
-  backup:
+      - type: bind
+        source: ./datadir
+        target: /var/lib/mysql
+        read_only: false
+      - type: bind
+        source: ./backup
+        target: /backup
+        read_only: false
